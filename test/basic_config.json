@@ -1,0 +1,22 @@
+{
+	"debug": true,
+	"output_dir": "json_test",
+	"default_dataset_location": "../datasets/",
+	"dataset_name": "keijzer-10-test.csv",
+	"functions": ["add", "sub", "mul", "div"],
+	"feature_number": 1,
+	"constants_range": [-5, 5],
+	"init_method": "half/half",
+	"chromosome_initial_max_depth": 5,
+	"chromosome_max_depth": 7,
+	"p_crossover": 0.6,
+	"p_mutation_subtree": 0.05,
+	"p_mutation_hoist": 0.05,
+    "p_mutation_point": 0.05,
+	"generations": 100,
+	"popsize": 20,
+	"elitism": true,
+	"tournament_size": 2,
+	"random_seed": 1,
+	"repetitions": 1
+}
