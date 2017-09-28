@@ -83,7 +83,10 @@ class PopManager(object):
         p2_l = p2_c.to_list()
 
         # concatenate subtrees
-        return p1_l[:start] + p2_l[donor_start:donor_end] + p1_l[:start][end:]
+        return p1_l[:start] + p2_l[donor_start:donor_end] + p1_l[end:]
+
+    def get_pop(self):
+        return self.pop
 
     def export_pop_to_list(self):
         generation = []

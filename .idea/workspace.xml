@@ -8,28 +8,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a9bf66c2-9b53-4399-a871-c5ab1c05824c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-10-e1.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-10-e2.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-10-e3.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-10-e4.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-10-e5.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-10-e6.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-7-e1.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-7-e2.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-7-e3.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-7-e4.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-7-e5.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-7-e6.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/keijzer-8-small.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/test_config.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config/house-small.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/datasets/house-train-small.csv" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-10-e1.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-10-e2.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-10-e3.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-10-e4.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-10-e5.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-10-e6.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-7-e1.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-7-e3.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-7-e4.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-7-e5.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-7-e6.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-7-highquality.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/config/keijzer-8_slow_super_convergence.json" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/config/keijzer-7-e2.json" afterPath="$PROJECT_DIR$/config/house-small.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/chromosome.py" afterPath="$PROJECT_DIR$/chromosome.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/keijzer-10.json" afterPath="$PROJECT_DIR$/config/keijzer-10.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/keijzer-7.json" afterPath="$PROJECT_DIR$/config/keijzer-7.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/configparser.py" afterPath="$PROJECT_DIR$/configparser.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/keijzer-8.json" afterPath="$PROJECT_DIR$/config/keijzer-8.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gen_manager.py" afterPath="$PROJECT_DIR$/gen_manager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/genetic_functions.py" afterPath="$PROJECT_DIR$/genetic_functions.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_chromosome_plot.py" afterPath="$PROJECT_DIR$/test/test_chromosome_plot.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/test_pop_manager.py" afterPath="$PROJECT_DIR$/test/test_pop_manager.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pop_manager.py" afterPath="$PROJECT_DIR$/pop_manager.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,11 +45,9 @@
       <file leaf-file-name="pop_manager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pop_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="78" column="31" lean-forward="true" selection-start-line="78" selection-start-column="31" selection-end-line="78" selection-end-column="31" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="629">
+              <caret line="88" column="23" lean-forward="false" selection-start-line="88" selection-start-column="23" selection-end-line="88" selection-end-column="23" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -56,8 +55,8 @@
       <file leaf-file-name="gen_manager.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gen_manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="85" column="0" lean-forward="false" selection-start-line="85" selection-start-column="0" selection-end-line="86" selection-end-column="70" />
+            <state relative-caret-position="189">
+              <caret line="72" column="53" lean-forward="false" selection-start-line="72" selection-start-column="53" selection-end-line="72" selection-end-column="53" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -65,58 +64,8 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_pop_manager.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test_pop_manager.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-198">
-              <caret line="10" column="41" lean-forward="false" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="chromosome.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/chromosome.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="381">
-              <caret line="323" column="21" lean-forward="false" selection-start-line="323" selection-start-column="21" selection-end-line="323" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="genetic_functions.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/genetic_functions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="151" column="65" lean-forward="false" selection-start-line="151" selection-start-column="65" selection-end-line="151" selection-end-column="65" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="basic_config.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/basic_config.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="4" column="21" lean-forward="false" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_config.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/test_config.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" column="28" lean-forward="false" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="keijzer-8-small.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/keijzer-8-small.json">
+      <file leaf-file-name="keijzer-10.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/keijzer-10.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="270">
               <caret line="15" column="21" lean-forward="false" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
@@ -125,21 +74,71 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="keijzer-7.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/keijzer-7.json">
+      <file leaf-file-name="house.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/house.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="15" column="20" lean-forward="false" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+            <state relative-caret-position="198">
+              <caret line="11" column="22" lean-forward="false" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="keijzer-7-e4.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/keijzer-7-e4.json">
+      <file leaf-file-name="house-small.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/house-small.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="288">
-              <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
+            <state relative-caret-position="126">
+              <caret line="7" column="38" lean-forward="false" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="house-train-small.csv" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/datasets/house-train-small.csv">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="377">
+              <caret line="977" column="35" lean-forward="true" selection-start-line="977" selection-start-column="35" selection-end-line="977" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="keijzer-8.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/keijzer-8.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="11" column="23" lean-forward="true" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="configparser.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/configparser.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="341">
+              <caret line="58" column="58" lean-forward="true" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="58" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="chromosome.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/chromosome.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="273">
+              <caret line="86" column="108" lean-forward="false" selection-start-line="86" selection-start-column="108" selection-end-line="86" selection-end-column="108" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="keijzer-7.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config/keijzer-7.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="16" column="17" lean-forward="false" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -195,11 +194,7 @@
         <option value="$PROJECT_DIR$/runs/keijzer-10.json" />
         <option value="$PROJECT_DIR$/test/test_chromosome.py" />
         <option value="$PROJECT_DIR$/runs/keijzer-8.json" />
-        <option value="$PROJECT_DIR$/pop_manager.py" />
-        <option value="$PROJECT_DIR$/config/keijzer-8.json" />
         <option value="$PROJECT_DIR$/config/keijzer-7-highquality.json" />
-        <option value="$PROJECT_DIR$/config/keijzer-10.json" />
-        <option value="$PROJECT_DIR$/config/house.json" />
         <option value="$PROJECT_DIR$/configparser.py" />
         <option value="$PROJECT_DIR$/config/keijzer-7-e1.json" />
         <option value="$PROJECT_DIR$/config/keijzer-7-e2.json" />
@@ -210,13 +205,19 @@
         <option value="$PROJECT_DIR$/config/keijzer-10-e5.json" />
         <option value="$PROJECT_DIR$/test/test_chromosome_plot.py" />
         <option value="$PROJECT_DIR$/config/keijzer-10-e1.json" />
-        <option value="$PROJECT_DIR$/config/keijzer-7.json" />
         <option value="$PROJECT_DIR$/genetic_functions.py" />
         <option value="$PROJECT_DIR$/test/basic_config.json" />
         <option value="$PROJECT_DIR$/test/test_config.json" />
         <option value="$PROJECT_DIR$/test/test_pop_manager.py" />
-        <option value="$PROJECT_DIR$/chromosome.py" />
         <option value="$PROJECT_DIR$/config/keijzer-8-small.json" />
+        <option value="$PROJECT_DIR$/config/keijzer-7.json" />
+        <option value="$PROJECT_DIR$/config/keijzer-8.json" />
+        <option value="$PROJECT_DIR$/config/keijzer-10.json" />
+        <option value="$PROJECT_DIR$/datasets/house-train-small.csv" />
+        <option value="$PROJECT_DIR$/config/house.json" />
+        <option value="$PROJECT_DIR$/chromosome.py" />
+        <option value="$PROJECT_DIR$/config/house-small.json" />
+        <option value="$PROJECT_DIR$/pop_manager.py" />
         <option value="$PROJECT_DIR$/gen_manager.py" />
       </list>
     </option>
@@ -331,10 +332,10 @@
       <recent name="$PROJECT_DIR$/plot" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/test" />
-      <recent name="$PROJECT_DIR$/config" />
-      <recent name="$PROJECT_DIR$/runs" />
       <recent name="$PROJECT_DIR$/datasets" />
+      <recent name="$PROJECT_DIR$/config" />
+      <recent name="$PROJECT_DIR$/test" />
+      <recent name="$PROJECT_DIR$/runs" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -548,13 +549,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="24" width="1920" height="1032" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973932" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24973932" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.52625936" sideWeight="0.21637122" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.4979145" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.52625936" sideWeight="0.78362876" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2540193" sideWeight="0.78362876" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -569,26 +569,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.52625936" sideWeight="0.21637122" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.52625936" sideWeight="0.78362876" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973932" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.4979145" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -598,8 +578,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test/test.chr" />
-    <entry file="file://$PROJECT_DIR$/paths.py" />
     <entry file="file:///usr/lib/python2.7/json/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="303">
@@ -712,14 +690,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/keijzer-8.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datasets/keijzer-10-test.csv">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="414">
@@ -733,24 +703,6 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/house.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="18" column="24" lean-forward="false" selection-start-line="18" selection-start-column="24" selection-end-line="18" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/configparser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-457">
-          <caret line="58" column="9" lean-forward="false" selection-start-line="58" selection-start-column="9" selection-end-line="58" selection-end-column="9" />
-          <folding>
-            <element signature="e#33#42#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -790,14 +742,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="360">
           <caret line="20" column="20" lean-forward="true" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/keijzer-10.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="9" column="37" lean-forward="false" selection-start-line="9" selection-start-column="37" selection-end-line="9" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -876,24 +820,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/keijzer-7-e4.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pop_manager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="78" column="31" lean-forward="true" selection-start-line="78" selection-start-column="31" selection-end-line="78" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test/basic_config.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
@@ -934,26 +860,90 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/config/keijzer-7-e4.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/config/keijzer-7.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="15" column="20" lean-forward="false" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+        <state relative-caret-position="234">
+          <caret line="16" column="17" lean-forward="false" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/keijzer-8.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="23" lean-forward="true" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/chromosome.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="381">
-          <caret line="323" column="21" lean-forward="false" selection-start-line="323" selection-start-column="21" selection-end-line="323" selection-end-column="21" />
+        <state relative-caret-position="273">
+          <caret line="86" column="108" lean-forward="false" selection-start-line="86" selection-start-column="108" selection-end-line="86" selection-end-column="108" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/keijzer-10.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="15" column="21" lean-forward="false" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/house.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="22" lean-forward="false" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/house-small.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="38" lean-forward="false" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/datasets/house-train-small.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="977" column="35" lean-forward="true" selection-start-line="977" selection-start-column="35" selection-end-line="977" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pop_manager.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="88" column="23" lean-forward="false" selection-start-line="88" selection-start-column="23" selection-end-line="88" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/configparser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="58" column="58" lean-forward="true" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="58" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gen_manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="85" column="0" lean-forward="false" selection-start-line="85" selection-start-column="0" selection-end-line="86" selection-end-column="70" />
+        <state relative-caret-position="189">
+          <caret line="72" column="53" lean-forward="false" selection-start-line="72" selection-start-column="53" selection-end-line="72" selection-end-column="53" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>

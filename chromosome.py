@@ -35,7 +35,12 @@ class Chromosome(object):
 
         method = self.init_method
         if self.init_method == 'half/half':
-            method = random.choice(['grow', 'full'])
+            # method = random.choice(['grow', 'full'])
+            if random.uniform(0.0, 1.0) < 0.4:
+                method = 'grow'
+            else:
+                method = 'full'
+
 
         max_depth = random.randint(0, self.initial_max_depth - 1)
 
@@ -77,6 +82,9 @@ class Chromosome(object):
         Validate if the chromosome is valid
         """
         if self.get_depth() > self.cfg.chromosome_max_depth:
+            return False
+
+        if self.get_length() == 1 and (isinstance(self.program[0], float) or isinstance(self.program[0], int)):
             return False
 
         terminals = [0]
@@ -311,7 +319,7 @@ class Chromosome(object):
 
         for i in xrange(len(self.program)):
             prob = random.uniform(0.0, 1.0)
-            print 'prob', prob, ' self.cfg.p_mutation_point',  self.cfg.p_mutation_point
+            #print 'prob', prob, ' self.cfg.p_mutation_point',  self.cfg.p_mutation_point
             if prob < self.cfg.p_mutation_point:
                 g = self.program[i]
                 g_old = g

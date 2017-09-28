@@ -39,8 +39,8 @@ class GenManager(object):
         for i in xrange(0, self.cfg.generations):
             generation_data[i] = []
 
-        genetic_probs = [self.cfg.p_crossover, self.cfg.p_mutation_subtree,
-                         self.cfg.p_mutation_hoist, self.cfg.p_mutation_point]
+        # genetic_probs = [self.cfg.p_crossover, self.cfg.p_mutation_subtree,
+        #                  self.cfg.p_mutation_hoist, self.cfg.p_mutation_point]
         # cum = 0
         # sum_probs = []
         # for p in genetic_probs:
@@ -49,8 +49,8 @@ class GenManager(object):
         #
         # print 'sum_probs:', sum_probs
 
-        if sum(genetic_probs) > 1.0:
-            raise ValueError('Genetic probs > 1.0 ({})'.format(sum(genetic_probs)))
+        # if sum(genetic_probs) > 1.0:
+        #     raise ValueError('Genetic probs > 1.0 ({})'.format(sum(genetic_probs)))
 
         # generates initial population
         new_pop = []
@@ -66,10 +66,11 @@ class GenManager(object):
         self.evaluate(new_pop, 1, self.cfg)
         best = pmanager.elite()
         print 'Best indivivual:', best, best['chromosome'].to_list()
-        generation_data[0] = pmanager.export_pop_to_list()
+        generation_data[0] = {'data': pmanager.get_pop(), 'time': int(round(time.time() * 1000))}
 
         for i in range(1, self.cfg.generations):
             # starts from 1 because 1st generation (index 0) was evaluated already
+            print 'Starting generation: {}'.format(i)
             new_pop = []
 
             if self.cfg.elitism:
@@ -77,7 +78,7 @@ class GenManager(object):
                 new_pop.append({'chromosome': pmanager.elite()['chromosome'].clone(), 'fitness': 9999999999999})
 
             while len(new_pop) < self.cfg.popsize:
-                prob = random.uniform(0.0, 1.0)
+                #prob = random.uniform(0.0, 1.0)
                 new_child = pmanager.tournament_selection()['chromosome'].clone()
 
                 #print 'prob', prob
@@ -85,32 +86,39 @@ class GenManager(object):
                 # crossover
                 # self.cfg.p_crossover, self.cfg.p_mutation_subtree,
                 # self.cfg.p_mutation_hoist, self.cfg.p_mutation_point
-                if prob < sum_probs[0]:
+                if random.uniform(0.0, 1.0) < self.cfg.p_crossover:
                     #print 'crossover'
                     p2 = pmanager.tournament_selection()['chromosome'].clone()
                     child_list = pmanager.crossover(new_child, p2)
                     new_child = Chromosome(self.cfg).from_list(child_list)
                     if not new_child.is_valid():
                         continue
+                else:
+                    # reproduce and use the parent as is
+                    pass
 
                 # mutation subtree
-                elif prob < sum_probs[1]:
+                if random.uniform(0.0, 1.0) < self.cfg.p_mutation_subtree:
                     #print 'subtree'
                     new_child.subtree_mutation()
+                    if not new_child.is_valid():
+                        continue
 
                 # mutation hoist
-                elif prob < sum_probs[2]:
+                if random.uniform(0.0, 1.0) < self.cfg.p_mutation_hoist:
                     #print 'hoist'
                     new_child.hoist_mutation()
+                    if not new_child.is_valid():
+                        continue
 
                 # mutation point
-                elif prob < sum_probs[3]:
-                    #print 'point mut'
-                    new_child.point_mutation()
+                #if random.uniform(0.0, 1.0) < self.cfg.p_mutation_point:
+                #print 'point mut'
+                new_child.point_mutation()
 
-                else:
-                    # reproduce
-                    pass
+                # else:
+                #     # reproduce
+                #     pass
 
                 #print 'new child:', new_child.to_list()
                 if new_child.is_valid():
@@ -126,7 +134,8 @@ class GenManager(object):
 
             #prepares for the next generation
             print 'Copying gen data...'
-            generation_data[i] = pmanager.export_pop_to_list()
+            generation_data[i] = {'data': pmanager.get_pop(), 'time': int(round(time.time() * 1000))}
+            print 'Copied...'
 
         print 'Algorithm ended'
         all_best = pmanager.elite()
@@ -140,7 +149,7 @@ class GenManager(object):
         with open(run_file, 'w') as fp:
             json.dump(generation_data, fp)
 
-        self.get_fitness_plot(generation_data)
+        #self.get_fitness_plot(generation_data)
         self.plot_best_solution(all_best['chromosome'])
 
     def get_fitness_plot(self, gen_data):
