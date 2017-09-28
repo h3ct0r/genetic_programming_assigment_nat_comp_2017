@@ -41,13 +41,13 @@ class GenManager(object):
 
         genetic_probs = [self.cfg.p_crossover, self.cfg.p_mutation_subtree,
                          self.cfg.p_mutation_hoist, self.cfg.p_mutation_point]
-        cum = 0
-        sum_probs = []
-        for p in genetic_probs:
-            cum += p
-            sum_probs.append(cum)
-
-        print 'sum_probs:', sum_probs
+        # cum = 0
+        # sum_probs = []
+        # for p in genetic_probs:
+        #     cum += p
+        #     sum_probs.append(cum)
+        #
+        # print 'sum_probs:', sum_probs
 
         if sum(genetic_probs) > 1.0:
             raise ValueError('Genetic probs > 1.0 ({})'.format(sum(genetic_probs)))
@@ -83,6 +83,8 @@ class GenManager(object):
                 #print 'prob', prob
 
                 # crossover
+                # self.cfg.p_crossover, self.cfg.p_mutation_subtree,
+                # self.cfg.p_mutation_hoist, self.cfg.p_mutation_point
                 if prob < sum_probs[0]:
                     #print 'crossover'
                     p2 = pmanager.tournament_selection()['chromosome'].clone()
@@ -123,6 +125,7 @@ class GenManager(object):
             print 'Best indivivual:', best, best['chromosome'].to_list()
 
             #prepares for the next generation
+            print 'Copying gen data...'
             generation_data[i] = pmanager.export_pop_to_list()
 
         print 'Algorithm ended'
@@ -133,7 +136,7 @@ class GenManager(object):
 
         run_file = self.cfg.dataset_name
         epoch = int(round(time.time() * 1000))
-        run_file = 'runs/' + self.cfg.cfgdir + '.' + str(epoch) + '.json'
+        run_file = 'runs/' + os.path.basename(self.cfg.cfgdir) + '.' + str(epoch) + '.json'
         with open(run_file, 'w') as fp:
             json.dump(generation_data, fp)
 
@@ -143,6 +146,12 @@ class GenManager(object):
     def get_fitness_plot(self, gen_data):
         plotX = []
         plotY = []
+
+        #plt.plot(plotX, [1] * len(plotX), 'y--')
+        plt.ylabel('Fitness value')
+        plt.xlabel('Generation')
+        #plt.axis([min(plotX), max(plotX), 0, 3])
+        plt.legend(ncol=3)
 
         for k in sorted(gen_data.keys()):
             v = gen_data[k]
@@ -154,7 +163,10 @@ class GenManager(object):
                 plotY.append(np.mean(fitness_list))
 
         plt.plot(plotX, plotY, 'b', label='mean')
-        plt.xticks(np.arange(min(plotX), max(plotX) + 1, 2.0))
+        ax = plt.gca()
+        ax.set_ylim(min(plotY) - 10, max(plotY) + 10)
+        plt.xticks(np.arange(min(plotX), max(plotX) + 1, 10))
+        plt.show()
 
         plotX = []
         plotY = []
@@ -169,7 +181,8 @@ class GenManager(object):
                 plotY.append(m)
 
         plt.plot(plotX, plotY, 'r', label='min')
-        plt.xticks(np.arange(min(plotX), max(plotX) + 1, 2.0))
+        plt.xticks(np.arange(min(plotX), max(plotX) + 1, 10))
+        plt.show()
 
         plotX = []
         plotY = []
@@ -183,14 +196,12 @@ class GenManager(object):
                 #print 'gen {} max: {}'.format(k, m)
                 plotY.append(m)
 
-        plt.plot(plotX, plotY, 'g', label='max')
-        plt.xticks(np.arange(min(plotX), max(plotX) + 1, 2.0))
+        print plotY
 
-        plt.plot(plotX, [1] * len(plotX), 'y--')
-        plt.ylabel('Fitness value')
-        plt.xlabel('Generation')
-        #plt.axis([min(plotX), max(plotX), 0, 3])
-        plt.legend(ncol=3)
+        plt.plot(plotX, plotY, 'g', label='max')
+        plt.xticks(np.arange(min(plotX), max(plotX) + 1, 10))
+
+
         plt.show()
         pass
 

@@ -84,87 +84,72 @@ class GeneticFunctions(object):
             {
                 'name': 'add',
                 'arity': 2,
-                'function': OperatorFunction(local_add, 'add', 2),
-                'eval': '+'
+                'function': OperatorFunction(local_add, 'add', 2)
             },
             {
                 'name': 'sub',
                 'arity': 2,
-                'function': OperatorFunction(local_sub, 'sub', 2),
-                'eval': '-'
+                'function': OperatorFunction(local_sub, 'sub', 2)
             },
             {
                 'name': 'mul',
                 'arity': 2,
-                'function': OperatorFunction(local_mul, 'mul', 2),
-                'eval': '*'
+                'function': OperatorFunction(local_mul, 'mul', 2)
             },
             {
                 'name': 'div',
                 'arity': 2,
-                'function': OperatorFunction(local_div, 'div', 2),
-                'eval': '/'
+                'function': OperatorFunction(local_div, 'div', 2)
             },
             {
                 'name': 'sqrt',
                 'arity': 1,
-                'function': OperatorFunction(local_sqrt, 'sqrt', 1),
-                'eval': 'math.sqrt'
+                'function': OperatorFunction(local_sqrt, 'sqrt', 1)
             },
             {
                 'name': 'log',
                 'arity': 1,
-                'function': OperatorFunction(local_log, 'log', 1),
-                'eval': 'math.log'
+                'function': OperatorFunction(local_log, 'log', 1)
             },
             {
                 'name': 'abs',
                 'arity': 1,
-                'function': OperatorFunction(local_abs, 'abs', 1),
-                'eval': 'abs'
+                'function': OperatorFunction(local_abs, 'abs', 1)
             },
             {
                 'name': 'neg',
                 'arity': 1,
-                'function': OperatorFunction(local_neg, 'neg', 1),
-                'eval': 'neg'
+                'function': OperatorFunction(local_neg, 'neg', 1)
             },
             {
                 'name': 'inv',
                 'arity': 1,
-                'function': OperatorFunction(local_inv, 'inv', 1),
-                'eval': 'inv'
+                'function': OperatorFunction(local_inv, 'inv', 1)
             },
             {
                 'name': 'max',
                 'arity': 2,
-                'function': OperatorFunction(local_max, 'max', 2),
-                'eval': 'max'
-
+                'function': OperatorFunction(local_max, 'max', 2)
             },
             {
                 'name': 'min',
                 'arity': 2,
-                'function': OperatorFunction(local_min, 'min', 2),
-                'eval': 'min'
+                'function': OperatorFunction(local_min, 'min', 2)
             },
             {
                 'name': 'sin',
                 'arity': 1,
-                'function': OperatorFunction(local_sin, 'sin', 1),
-                'eval': 'math.sin'
+                'function': OperatorFunction(local_sin, 'sin', 1)
             },
             {
                 'name': 'cos',
                 'arity': 1,
-                'function': OperatorFunction(local_cos, 'cos', 1),
-                'eval': 'math.cos'
+                'function': OperatorFunction(local_cos, 'cos', 1)
             },
             {
                 'name': 'tan',
                 'arity': 1,
-                'function': OperatorFunction(local_tan, 'tan', 1),
-                'eval': 'math.tan'
+                'function': OperatorFunction(local_tan, 'tan', 1)
             }
         ]
         self.functions = []

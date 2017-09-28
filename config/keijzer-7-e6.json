@@ -10,13 +10,13 @@
 	"chromosome_initial_max_depth": 4,
 	"chromosome_max_depth": 7,
 	"p_crossover": 0.4,
-	"p_mutation_subtree": 0.3,
-	"p_mutation_hoist": 0.2,
+	"p_mutation_subtree": 0.1,
+	"p_mutation_hoist": 0.1,
     "p_mutation_point": 0.1,
 	"generations": 100,
-	"popsize": 200,
-	"elitism": true,
+	"popsize": 400,
+	"elitism": false,
 	"tournament_size": 2,
-	"random_seed": 123,
+	"random_seed": 1237,
 	"repetitions": 1
 }

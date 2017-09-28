@@ -47,10 +47,30 @@ def evaluate(c, cfg):
     # plt.axis([min(plotX), max(plotX), 0, 3])
     plt.legend(ncol=3)
     plt.show()
+
+
+    # plot error by sample
+    basex = [i for i in xrange(len(cfg.dataset))]
+
+    errory = []
+    for i in xrange(len(cfg.dataset)):
+        base = basey[i]
+        calc = calcy[i]
+        v = math.sqrt((base - calc) ** 2)
+        v2 = (v * 100) / float(base)
+
+        print v2, 'base', base, 'calc', calc, 'v', v
+        errory.append(v2)
+
+    plt.plot(basex, errory,  c='c', label='error')
+    #plt.plot(basex, calcy, c='r', label='estimated')
+    plt.legend(ncol=3)
+    plt.show()
+
     pass
 
 if __name__ == "__main__":
     cfg = configparser.ConfigParser('basic_config.json')
-    c = chromosome.Chromosome(cfg).from_list(['sub', 'add', 'add', 4.953209186602749, 1, -4.277659859622231, 'mul', 0, 'sub', 'add', 'add', 4.953209186602749, 1, -4.277659859622231, 'mul', 0, 0])
+    c = chromosome.Chromosome(cfg).from_list(['sub', 'mul', 'add', 1, 0, 'div', -0.05527669386543188, 1.1400041645812315, 'div', 'sub', -3.693461293901205, 0, 'sub', 1.8786332436929527, -3.1817367467611413])
     print c.export_graphviz()
     evaluate(c, cfg)

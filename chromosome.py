@@ -228,7 +228,10 @@ class Chromosome(object):
         # Build a new naive program
         chicken = Chromosome(self.cfg).generate()
         # Do subtree mutation via the headless chicken method!
-        return pop_manager.PopManager.crossover(self, chicken)
+
+        mutated_list = pop_manager.PopManager.crossover(self, chicken)
+        self.from_list(mutated_list)
+        return mutated_list
 
     def hoist_mutation(self):
         """Perform the hoist mutation operation on the program.
@@ -251,17 +254,51 @@ class Chromosome(object):
         # Get a subtree to replace
         start, end = self.get_subtree()
         subtree = self.program[start:end]
-        subtree_chrom = Chromosome(self.cfg).from_list(subtree)
+        #subtree_chrom = Chromosome(self.cfg).from_list(subtree)
 
         # Get a subtree of the subtree to hoist
-        sub_start, sub_end = subtree_chrom.get_subtree()
-        hoist = subtree[sub_start:sub_end]
+        # sub_start, sub_end = subtree_chrom.get_subtree()
+        # hoist = subtree[sub_start:sub_end]
+        #
+        # print 'start, end', start, end
+        #
+        # str_list = []
+        # for i in xrange(len(self.program[:start])):
+        #     if isinstance(self.program[:start][i], dict):
+        #         str_list.append(self.program[:start][i]['name'])
+        #     else:
+        #         str_list.append(self.program[:start][i])
+        # print '1:', str_list
+        #
+        # str_list = []
+        # for i in xrange(len(hoist)):
+        #     if isinstance(hoist[i], dict):
+        #         str_list.append(hoist[i]['name'])
+        #     else:
+        #         str_list.append(hoist[i])
+        # print 'hoist', str_list
+        #
+        # str_list = []
+        # for i in xrange(len(self.program[end:])):
+        #     if isinstance(self.program[end:][i], dict):
+        #         str_list.append(self.program[end:][i]['name'])
+        #     else:
+        #         str_list.append(self.program[end:][i])
+        # print '2:', str_list
+        #
+        # mutated_list = self.program[:start] + hoist + self.program[end:]
+        # str_list = []
+        # for i in xrange(len(mutated_list)):
+        #     if isinstance(mutated_list[i], dict):
+        #         str_list.append(mutated_list[i]['name'])
+        #     else:
+        #         str_list.append(mutated_list[i])
+        # print '3:', str_list
+        # #print '3:', mutated_list
 
-        # Determine which nodes were removed for plotting
-        removed = list(set(range(start, end)) -
-                       set(range(start + sub_start, start + sub_end)))
-
-        return self.program[:start] + hoist + self.program[end:], removed
+        #self.from_list(mutated_list)
+        self.from_list(subtree)
+        return subtree
 
     def point_mutation(self):
         """
@@ -273,7 +310,9 @@ class Chromosome(object):
         """
 
         for i in xrange(len(self.program)):
-            if random.uniform(0.0, 1.0) < self.cfg.p_mutation_point:
+            prob = random.uniform(0.0, 1.0)
+            print 'prob', prob, ' self.cfg.p_mutation_point',  self.cfg.p_mutation_point
+            if prob < self.cfg.p_mutation_point:
                 g = self.program[i]
                 g_old = g
 
@@ -306,6 +345,8 @@ class Chromosome(object):
         :return start, end : tuple of two ints
         """
 
+        #print 'get subtree'
+
         prob_list = []
         for i in xrange(len(self.program)):
             g = self.program[i]
@@ -332,11 +373,14 @@ class Chromosome(object):
         stack = 1
         end = start
 
+        #print 'start', start, 'stack', stack, 'end', end
+
         while stack > end - start:
             node = self.program[end]
             if isinstance(node, dict):
                 stack += node['arity']
             end += 1
+            #print 'start', start, 'stack', stack, 'end', end , 'node', node
 
         return start, end
 

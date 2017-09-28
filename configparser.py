@@ -56,7 +56,7 @@ class ConfigParser(object):
         self.dataset = None
         self.load_dataset()
 
-        self.random_seed = int(round(time.time() * 1000))
+        #self.random_seed = int(round(time.time() * 1000))
 
     def load_dataset(self):
         f = open(os.path.join(self.default_dataset_location, self.dataset_name), "rb")
