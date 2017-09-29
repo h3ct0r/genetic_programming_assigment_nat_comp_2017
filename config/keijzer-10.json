@@ -14,7 +14,7 @@
 	"p_mutation_hoist": 0.2,
     "p_mutation_point": 0.1,
 	"generations": 100,
-	"popsize": 100,
+	"popsize": 500,
 	"elitism": true,
 	"tournament_size": 2,
 	"random_seed": 123,

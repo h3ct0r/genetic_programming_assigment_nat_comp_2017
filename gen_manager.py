@@ -66,7 +66,7 @@ class GenManager(object):
         self.evaluate(new_pop, 1, self.cfg)
         best = pmanager.elite()
         print 'Best indivivual:', best, best['chromosome'].to_list()
-        generation_data[0] = {'data': pmanager.get_pop(), 'time': int(round(time.time() * 1000))}
+        generation_data[0] = {'data': pmanager.export_pop_to_list(), 'time': int(round(time.time() * 1000))}
 
         for i in range(1, self.cfg.generations):
             # starts from 1 because 1st generation (index 0) was evaluated already
@@ -134,7 +134,7 @@ class GenManager(object):
 
             #prepares for the next generation
             print 'Copying gen data...'
-            generation_data[i] = {'data': pmanager.get_pop(), 'time': int(round(time.time() * 1000))}
+            generation_data[i] = {'data': pmanager.export_pop_to_list(), 'time': int(round(time.time() * 1000))}
             print 'Copied...'
 
         print 'Algorithm ended'
@@ -149,12 +149,48 @@ class GenManager(object):
         with open(run_file, 'w') as fp:
             json.dump(generation_data, fp)
 
-        #self.get_fitness_plot(generation_data)
-        self.plot_best_solution(all_best['chromosome'])
+        self.plot_best_solution(all_best['chromosome'], epoch)
+        self.get_fitness_plot(generation_data, epoch)
 
-    def get_fitness_plot(self, gen_data):
+
+    def is_outlier(self, p, thresh=1.5):
+        """
+        Returns a boolean array with True if points are outliers and False 
+        otherwise.
+
+        Parameters:
+        -----------
+            points : An numobservations by numdimensions array of observations
+            thresh : The modified z-score to use as a threshold. Observations with
+                a modified z-score (based on the median absolute deviation) greater
+                than this value will be classified as outliers.
+
+        Returns:
+        --------
+            mask : A numobservations-length boolean array.
+
+        References:
+        ----------
+            Boris Iglewicz and David Hoaglin (1993), "Volume 16: How to Detect and
+            Handle Outliers", The ASQC Basic References in Quality Control:
+            Statistical Techniques, Edward F. Mykytka, Ph.D., Editor. 
+        """
+        if len(p.shape) == 1:
+            p = p[:, None]
+
+        median = np.median(p, axis=0)
+        diff = np.sum((p - median) ** 2, axis=-1)
+        diff = np.sqrt(diff)
+        med_abs_deviation = np.median(diff)
+
+        modified_z_score = 0.6745 * diff / med_abs_deviation
+
+        return modified_z_score > thresh
+
+    def get_fitness_plot(self, gen_data, epoch):
         plotX = []
         plotY = []
+        plotYstd = []
 
         #plt.plot(plotX, [1] * len(plotX), 'y--')
         plt.ylabel('Fitness value')
@@ -163,25 +199,40 @@ class GenManager(object):
         plt.legend(ncol=3)
 
         for k in sorted(gen_data.keys()):
-            v = gen_data[k]
+            v = gen_data[k]['data']
             if len(v) > 0:
                 plotX.append(k)
                 fitness_list = [i['fitness'] for i in v]
                 m = np.mean(fitness_list)
+                min_v = min(fitness_list)
                 #print 'gen {} mean: {}'.format(k, m)
                 plotY.append(np.mean(fitness_list))
+                plotYstd.append(np.std(fitness_list, ddof=1))
+
+        # outliers = self.is_outlier(np.array(plotY))
+        # print plotY
+        # print outliers
+        # total_mean = np.mean(plotY)
+        # print 'total_mean', total_mean
+        # for i in xrange(len(outliers)):
+        #     v = outliers[i]
+        #     if v:
+        #         plotY[i] = total_mean
+        #         print 'pos:{}, outlier'.format(i)
+
 
         plt.plot(plotX, plotY, 'b', label='mean')
-        ax = plt.gca()
-        ax.set_ylim(min(plotY) - 10, max(plotY) + 10)
-        plt.xticks(np.arange(min(plotX), max(plotX) + 1, 10))
-        plt.show()
+        #plt.errorbar(plotX, plotY, plotYstd, linestyle='None', marker='^')
+        # ax = plt.gca()
+        # ax.set_ylim(min(plotY) - 10, max(plotY) + 10)
+        # plt.xticks(np.arange(min(plotX), max(plotX) + 1, 10))
+        # plt.show()
 
         plotX = []
         plotY = []
 
         for k in sorted(gen_data.keys()):
-            v = gen_data[k]
+            v = gen_data[k]['data']
             if len(v) > 0:
                 plotX.append(k)
                 fitness_list = [i['fitness'] for i in v]
@@ -189,32 +240,46 @@ class GenManager(object):
                 #print 'gen {} min: {}'.format(k, m)
                 plotY.append(m)
 
-        plt.plot(plotX, plotY, 'r', label='min')
-        plt.xticks(np.arange(min(plotX), max(plotX) + 1, 10))
-        plt.show()
-
-        plotX = []
-        plotY = []
-
-        for k in sorted(gen_data.keys()):
-            v = gen_data[k]
-            if len(v) > 0:
-                plotX.append(k)
-                fitness_list = [i['fitness'] for i in v]
-                m = max(fitness_list)
-                #print 'gen {} max: {}'.format(k, m)
-                plotY.append(m)
-
-        print plotY
-
-        plt.plot(plotX, plotY, 'g', label='max')
+        plt.plot(plotX, plotY, 'r', linewidth=2, label='min')
         plt.xticks(np.arange(min(plotX), max(plotX) + 1, 10))
 
+        axes = plt.gca()
+        #axes.set_ylim([min(plotY) * -20, max(plotY) * 20])
 
-        plt.show()
+        #plt.yticks(np.arange(min(plotX) - 0.5, max(plotX) + 1, 0.1))
+        #plt.show()
+
+        # plotX = []
+        # plotY = []
+        #
+        # for k in sorted(gen_data.keys()):
+        #     v = gen_data[k]
+        #     if len(v) > 0:
+        #         plotX.append(k)
+        #         fitness_list = [i['fitness'] for i in v]
+        #         m = max(fitness_list)
+        #         #print 'gen {} max: {}'.format(k, m)
+        #         plotY.append(m)
+        #
+        # print plotY
+        #
+        # plt.plot(plotX, plotY, 'g', label='max')
+        # plt.xticks(np.arange(min(plotX), max(plotX) + 1, 10))
+
+        plt.legend(ncol=3)
+
+        #run_file = 'runs/' + os.path.basename(self.cfg.cfgdir) + '.' + str(epoch) + '.json'
+        #plt.show()
+
+
+
+        plot_file = 'plot/' + os.path.basename(self.cfg.cfgdir) + '.fitness.' + str(epoch) + '.pdf'
+        plt.savefig(plot_file)
+        plt.cla()
+        plt.close()
         pass
 
-    def plot_best_solution(self, c):
+    def plot_best_solution(self, c, epoch):
         res = c.run_with_dataset()
 
         y = [i[-1] for i in self.cfg.dataset]
@@ -245,7 +310,12 @@ class GenManager(object):
         # plt.xlabel('Generation')
         # plt.axis([min(plotX), max(plotX), 0, 3])
         plt.legend(ncol=3)
-        plt.show()
+
+        #plt.show()
+        plot_file = 'plot/' + os.path.basename(self.cfg.cfgdir) + '.function.' + str(epoch) + '.pdf'
+        plt.savefig(plot_file)
+        plt.cla()
+        plt.close()
         pass
 
     def evaluate(self, population, generation, cfg):
