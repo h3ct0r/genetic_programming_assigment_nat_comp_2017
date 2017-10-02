@@ -20,6 +20,38 @@ import configparser
 from pop_manager import PopManager
 from chromosome import Chromosome
 
+
+def execute_chromosome_chunk(c_list, dataset):
+    for c in c_list:
+        res = c['chromosome'].run_with_dataset()
+
+        y = [i[-1] for i in dataset]
+        y_size = len(y)
+
+        if y_size != len(res):
+            raise ValueError("The size of the calculated result is different from the dataset Y size")
+
+        fitness = math.sqrt((1/float(y_size)) * sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)]))
+        #fitness = sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)])
+
+        #print res
+        #print y
+
+        #print 'Chromosome:{}/{} Fitness:{} {}'.format(pindex, len(population), fitness, p['chromosome'].to_list())
+        #print 'Chromosome: Fitness:{} {}'.format(fitness, c['chromosome'].to_list())
+
+        # print 'Chromosome:', pindex, \
+        #     '\n\t', 'Fitness:', fitness, \
+        #     '\n\t', 'Depth:', p['chromosome'].get_depth(), \
+        #     '\n\t', 'Len:', p['chromosome'].get_length(), \
+        #     '\n\t', p['chromosome'].to_list(), \
+        #     #'\n\t', p['chromosome'].export_graphviz()
+        # print "\n"
+
+        c['fitness'] = fitness
+    return c_list
+
+
 class GenManager(object):
     """
     Genetic manager object
@@ -312,7 +344,7 @@ class GenManager(object):
         plt.close()
         pass
 
-    def evaluate(self, population):
+    def evaluate(self, population, use_threads=True, max_threads=4):
         '''
         Evaluates fitness of population members 
         :param population: the array with the population
@@ -322,32 +354,56 @@ class GenManager(object):
     
         '''
 
-        for pindex in range(0, len(population)):
-            p = population[pindex]
-            res = p['chromosome'].run_with_dataset()
+        if use_threads:
+            from concurrent.futures import as_completed, ThreadPoolExecutor, ProcessPoolExecutor
+            pop_chunks = np.array_split(population, 8)
+            waits = {}
+            thread_i = 0
 
-            y = [i[-1] for i in self.cfg.dataset]
-            y_size = len(y)
+            with ProcessPoolExecutor(max_workers=max_threads) as executor:
+                print 'len(pop_chunks)', len(pop_chunks)
+                for i in xrange(len(pop_chunks)):
+                    data = pop_chunks[i]
+                    waits[executor.submit(execute_chromosome_chunk, data, self.cfg.dataset)] = thread_i
+                    thread_i += 1
 
-            if y_size != len(res):
-                raise ValueError("The size of the calculated result is different from the dataset Y size")
+                    if thread_i >= max_threads:
+                        # if self.cfg.debug:
+                        #    print i, 'of', len(pop_chunks), 'iterations'
 
-            fitness = math.sqrt((1/float(y_size)) * sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)]))
-            #fitness = sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)])
+                        for future in as_completed(waits):
+                            node = waits[future]
+                            try:
+                                processed_chunk = future.result()
+                                # if processed_chunk is not None:
+                                #     for c in processed_chunk:
+                                #         print 'Chromosome:{}/{} Fitness:{} {}'.format(c['fitness'], c['chromosome'].to_list())
+                            except Exception as e:
+                                pass
+                                #print '{} generated an exception: {}'.format(node, e)
+                        thread_i = 0
+                        waits = {}
+        else:
+            for pindex in range(0, len(population)):
+                p = population[pindex]
+                res = p['chromosome'].run_with_dataset()
 
-            #print res
-            #print y
+                y = [i[-1] for i in self.cfg.dataset]
+                y_size = len(y)
 
-            print 'Chromosome:{}/{} Fitness:{} {}'.format(pindex, len(population), fitness, p['chromosome'].to_list())
+                if y_size != len(res):
+                    raise ValueError("The size of the calculated result is different from the dataset Y size")
 
-            # print 'Chromosome:', pindex, \
-            #     '\n\t', 'Fitness:', fitness, \
-            #     '\n\t', 'Depth:', p['chromosome'].get_depth(), \
-            #     '\n\t', 'Len:', p['chromosome'].get_length(), \
-            #     '\n\t', p['chromosome'].to_list(), \
-            #     #'\n\t', p['chromosome'].export_graphviz()
-            # print "\n"
+                fitness = math.sqrt((1/float(y_size)) * sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)]))
 
-            p['fitness'] = fitness
+                print 'Chromosome:{}/{} Fitness:{} {}'.format(pindex, len(population), fitness, p['chromosome'].to_list())
 
-        return p
+                # print 'Chromosome:', pindex, \
+                #     '\n\t', 'Fitness:', fitness, \
+                #     '\n\t', 'Depth:', p['chromosome'].get_depth(), \
+                #     '\n\t', 'Len:', p['chromosome'].get_length(), \
+                #     '\n\t', p['chromosome'].to_list(), \
+                #     #'\n\t', p['chromosome'].export_graphviz()
+                # print "\n"
+
+                p['fitness'] = fitness

@@ -51,7 +51,7 @@ def evaluate(c, cfg, is_plot=False):
         calcy = res
 
 
-        plt.title('Function plot (Keijzer 10)')
+        plt.title('Function plot (House)')
         # plt.xlabel('X')
         # plt.ylabel('Y')
 
@@ -191,7 +191,7 @@ def get_similarity_plot(similarity_rep):
         Y.append(mean)
         STD.append(std)
 
-    plt.title('Similarity (Keijzer 10)')
+    plt.title('Similarity (House)')
     plt.ylabel('% of similarity')
     plt.xlabel('Generation')
     plt.errorbar(X, Y, STD, linestyle='None', marker='^')
@@ -206,7 +206,7 @@ def get_fitness_plot(gen_data):
     plotY = []
     plotYstd = []
 
-    plt.title('Mean fitness (Keijzer 10)')
+    plt.title('Mean fitness (House)')
     plt.ylabel('Mean fitness value')
     plt.xlabel('Generation')
     #plt.legend(ncol=3)
@@ -259,7 +259,7 @@ def get_fitness_plot(gen_data):
     #plotX = []
     plotY = []
 
-    plt.title('Min fitness (Keijzer 10)')
+    plt.title('Min fitness (House)')
     plt.ylabel('Min fitness value')
     plt.xlabel('Generation')
     #plt.legend(ncol=3)
@@ -290,7 +290,7 @@ if __name__ == '__main__':
     data = load_generation_dataset(sys.argv[1])
     cfg = configparser.ConfigParser(sys.argv[2])
     print 'Using dataset: ', cfg.dataset_name
-    print get_best_fitness_mean_std(data, cfg, is_plot=True)
+    print get_best_fitness_mean_std(data, cfg)
     print '\n'
 
     cfg.dataset_name = cfg.dataset_name.replace('train', 'test')

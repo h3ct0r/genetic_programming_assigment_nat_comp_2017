@@ -24,10 +24,10 @@ def local_mul(a, b):
 
 
 def local_div(a, b):
-    try:
-        return float(a / b)
-    except Exception as e:
+    if b == 0:
         return float(1.0)
+    else:
+        return float(a / float(b))
 
 
 def local_sqrt(a):

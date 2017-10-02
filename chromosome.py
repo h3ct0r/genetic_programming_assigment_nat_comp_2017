@@ -2,6 +2,60 @@ import random
 import genetic_functions
 import copy
 import pop_manager
+import numpy as np
+import itertools
+from concurrent.futures import as_completed, ThreadPoolExecutor, ProcessPoolExecutor
+
+
+def run_with_chunk(chunk, program):
+    local_result = []
+
+    # Check for single-node programs
+    for var in chunk:
+        node = program[0]
+        if isinstance(node, float):
+            local_result.append(node)
+            continue
+        if isinstance(node, int):
+            local_result.append(var[node])
+            continue
+
+        apply_stack = []
+        for node in program:
+            # print 'node', node
+            if isinstance(node, dict):
+                apply_stack.append([node])
+            else:
+                # Lazily evaluate later
+                # print 'apply_stack', apply_stack
+                apply_stack[-1].append(node)
+
+            while len(apply_stack[-1]) == apply_stack[-1][0]['arity'] + 1:
+                # apply functions that have sufficient arguments
+                function = apply_stack[-1][0]
+
+                terminals = []
+                for t in apply_stack[-1][1:]:
+                    if isinstance(t, float):
+                        terminals.append(t)
+                    else:
+                        if isinstance(t, int):
+                            # print 'var', var, 't', t
+                            terminals.append(copy.deepcopy(var[t]))
+
+                # execute the terminals
+                intermediate_result = function['function'](*terminals)
+                # print intermediate_result, terminals, function['name']
+                # print function['name'], terminals, '=', intermediate_result
+                if len(apply_stack) != 1:
+                    apply_stack.pop()
+                    apply_stack[-1].append(intermediate_result)
+                else:
+                    local_result.append(intermediate_result)
+                    break
+
+    return local_result
+
 
 class Chromosome(object):
     '''
@@ -17,6 +71,9 @@ class Chromosome(object):
         self.constants_range = self.cfg.constants_range
         self.functions = self.cfg.genetic_functions
         self.dataset = self.cfg.dataset
+        self.dataset_chunks = np.array_split(self.dataset, 8)
+
+        self.thread_max = 2
 
         #  program is the chromosome tree
         self.program = []
@@ -104,49 +161,31 @@ class Chromosome(object):
         """
         result_list = []
 
-        # Check for single-node programs
-        for var in self.dataset:
-            node = self.program[0]
-            if isinstance(node, float):
-                result_list.append(node)
-                continue
-            if isinstance(node, int):
-                result_list.append(var[node])
-                continue
+        waits = {}
+        thread_i = 0
 
-            apply_stack = []
-            for node in self.program:
-                #print 'node', node
-                if isinstance(node, dict):
-                    apply_stack.append([node])
-                else:
-                    # Lazily evaluate later
-                    #print 'apply_stack', apply_stack
-                    apply_stack[-1].append(node)
+        with ProcessPoolExecutor(max_workers=self.thread_max) as executor:
+            for i in xrange(len(self.dataset_chunks)):
+                data = self.dataset_chunks[i]
+                waits[executor.submit(run_with_chunk, data, self.program)] = thread_i
+                thread_i += 1
 
-                while len(apply_stack[-1]) == apply_stack[-1][0]['arity'] + 1:
-                    # apply functions that have sufficient arguments
-                    function = apply_stack[-1][0]
+                if thread_i >= self.thread_max:
+                    #if self.cfg.debug:
+                    #    print i, 'of', len(self.dataset_chunks), 'iterations'
 
-                    terminals = []
-                    for t in apply_stack[-1][1:]:
-                        if isinstance(t, float):
-                            terminals.append(t)
-                        else:
-                            if isinstance(t, int):
-                                #print 'var', var, 't', t
-                                terminals.append(copy.deepcopy(var[t]))
-
-                    # execute the terminals
-                    intermediate_result = function['function'](*terminals)
-                    #print intermediate_result, terminals, function['name']
-                    #print function['name'], terminals, '=', intermediate_result
-                    if len(apply_stack) != 1:
-                        apply_stack.pop()
-                        apply_stack[-1].append(intermediate_result)
-                    else:
-                        result_list.append(intermediate_result)
-                        break
+                    for future in as_completed(waits):
+                        node = waits[future]
+                        try:
+                            processed_chunk = future.result()
+                            if processed_chunk is not None:
+                                #if self.cfg.debug:
+                                #    print 'processed chunk with size:{}'.format(len(processed_chunk))
+                                result_list += processed_chunk
+                        except Exception as e:
+                            print '{} generated an exception: {}'.format(node, e)
+                    thread_i = 0
+                    waits = {}
 
         return result_list
 
