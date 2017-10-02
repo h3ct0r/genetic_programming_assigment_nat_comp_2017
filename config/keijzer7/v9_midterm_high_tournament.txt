@@ -1,0 +1,23 @@
+{
+    "debug": true,
+    "output_dir": "json_test",
+    "default_dataset_location": "datasets/",
+    "dataset_name": "keijzer-7-train.csv",
+    "functions": ["add", "sub", "mul", "div"],
+    "feature_number": 1,
+    "constants_range": [-10, 10],
+    "init_method": "half/half",
+    "chromosome_initial_max_depth": 7,
+    "chromosome_max_depth": 7,
+    "p_crossover": 0.95,
+    "p_mutation": 0.3,
+    "p_mutation_subtree": 0.3,
+    "p_mutation_hoist": 0.1,
+    "p_mutation_point": 0.1,
+    "generations": 200,
+    "popsize": 100,
+    "elitism": true,
+    "tournament_size": 5,
+    "random_seed": 1234,
+    "repetitions": 30
+}

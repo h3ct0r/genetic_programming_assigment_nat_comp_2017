@@ -35,7 +35,8 @@ class ConfigParser(object):
 
         self.chromosome_initial_max_depth = 3
         self.chromosome_max_depth = 7
-        self.p_crossover = .6
+        self.p_crossover = 0.9
+        self.p_mutation = 0.1
         self.p_mutation_subtree = .05
         self.p_mutation_hoist = .05
         self.p_mutation_point = .05
@@ -63,7 +64,7 @@ class ConfigParser(object):
         self.dataset = list(csv.reader(f, quoting=csv.QUOTE_NONNUMERIC))
 
         print '[INFO]', 'Dataset size:{} field size:{}'.format(len(self.dataset), len(self.dataset[0]))
-        print '[INFO]', 'Dataset:', self.dataset
+        #print '[INFO]', 'Dataset:', self.dataset
 
     def load_config(self):
 
@@ -101,6 +102,9 @@ class ConfigParser(object):
         if 'p_crossover' in cfg_json:
             self.p_crossover = cfg_json['p_crossover']
 
+        if 'p_mutation' in cfg_json:
+            self.p_mutation = cfg_json['p_mutation']
+
         if 'p_mutation_subtree' in cfg_json:
             self.p_mutation_subtree = cfg_json['p_mutation_subtree']
 
@@ -124,6 +128,9 @@ class ConfigParser(object):
 
         if 'random_seed' in cfg_json:
             self.random_seed = cfg_json['random_seed']
+            if isinstance(self.random_seed, str):
+                print 'INFO', 'using random seed'
+                self.random_seed = int(round(time.time() * 1000))
 
         if 'repetitions' in cfg_json:
             self.repetitions = cfg_json['repetitions']
@@ -142,5 +149,5 @@ class ConfigParser(object):
     def get_parameters(self):
         attrs = vars(self)
         v = copy.deepcopy(attrs)
-        del  v['dataset']
-        return  v
+        del v['dataset']
+        return v

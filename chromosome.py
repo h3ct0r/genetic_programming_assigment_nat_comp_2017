@@ -41,7 +41,6 @@ class Chromosome(object):
             else:
                 method = 'full'
 
-
         max_depth = random.randint(0, self.initial_max_depth - 1)
 
         # Start a program with a function to avoid degenerative programs
@@ -117,10 +116,12 @@ class Chromosome(object):
 
             apply_stack = []
             for node in self.program:
+                #print 'node', node
                 if isinstance(node, dict):
                     apply_stack.append([node])
                 else:
                     # Lazily evaluate later
+                    #print 'apply_stack', apply_stack
                     apply_stack[-1].append(node)
 
                 while len(apply_stack[-1]) == apply_stack[-1][0]['arity'] + 1:
@@ -138,6 +139,7 @@ class Chromosome(object):
 
                     # execute the terminals
                     intermediate_result = function['function'](*terminals)
+                    #print intermediate_result, terminals, function['name']
                     #print function['name'], terminals, '=', intermediate_result
                     if len(apply_stack) != 1:
                         apply_stack.pop()
@@ -392,12 +394,17 @@ class Chromosome(object):
 
         return start, end
 
-    def from_list(self, program):
+    def from_list(self, list):
+        #print 'from list', list
         self.program = []
-        for node in program:
-            if isinstance(node, str):
+        for node in list:
+            #print 'node', node
+            if isinstance(node, str) or isinstance(node, basestring):
+                #print 'is istance str', node
                 funct = self.functions.get_function(node)
+                #print 'funct',funct
                 self.program.append(funct)
+                #print 'program', self.program
             else:
                 self.program.append(node)
         return self

@@ -2,7 +2,7 @@
 	"debug": true,
 	"output_dir": "json_test",
 	"default_dataset_location": "../datasets/",
-	"dataset_name": "keijzer-10-test.csv",
+	"dataset_name": "keijzer-7-test.csv",
 	"functions": ["add", "sub", "mul", "div"],
 	"feature_number": 1,
 	"constants_range": [-5, 5],

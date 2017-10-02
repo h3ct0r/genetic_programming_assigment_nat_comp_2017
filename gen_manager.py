@@ -10,6 +10,8 @@ import glob
 import csv
 import math
 import numpy as np
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import json
 import time
@@ -17,7 +19,6 @@ import time
 import configparser
 from pop_manager import PopManager
 from chromosome import Chromosome
-
 
 class GenManager(object):
     """
@@ -35,123 +36,118 @@ class GenManager(object):
         print '[INFO]', 'Used config:', self.cfg.get_parameters()
 
     def start(self):
-        generation_data = {}
-        for i in xrange(0, self.cfg.generations):
-            generation_data[i] = []
+        repetition_data = []
 
-        # genetic_probs = [self.cfg.p_crossover, self.cfg.p_mutation_subtree,
-        #                  self.cfg.p_mutation_hoist, self.cfg.p_mutation_point]
-        # cum = 0
-        # sum_probs = []
-        # for p in genetic_probs:
-        #     cum += p
-        #     sum_probs.append(cum)
-        #
-        # print 'sum_probs:', sum_probs
+        for repetition in xrange(self.cfg.repetitions):
 
-        # if sum(genetic_probs) > 1.0:
-        #     raise ValueError('Genetic probs > 1.0 ({})'.format(sum(genetic_probs)))
+            # init generation data
+            generation_data = {}
+            for i in xrange(0, self.cfg.generations):
+                generation_data[i] = []
 
-        # generates initial population
-        new_pop = []
-        for p in range(0, self.cfg.popsize):
-            # sets fitness to -1 because population will be evaluated right after this loop
-            new_pop.append({'chromosome': Chromosome(self.cfg).generate(), 'fitness': 9999999999999})
-
-        pmanager = PopManager(self.cfg)
-        pmanager.set_pop(new_pop)
-
-        # evaluates the 1st generation
-        print 'Evaluating generation #1'
-        self.evaluate(new_pop, 1, self.cfg)
-        best = pmanager.elite()
-        print 'Best indivivual:', best, best['chromosome'].to_list()
-        generation_data[0] = {'data': pmanager.export_pop_to_list(), 'time': int(round(time.time() * 1000))}
-
-        for i in range(1, self.cfg.generations):
-            # starts from 1 because 1st generation (index 0) was evaluated already
-            print 'Starting generation: {}'.format(i)
+            # generates initial population
             new_pop = []
+            for p in range(0, self.cfg.popsize):
+                # sets fitness to -1 because population will be evaluated right after this loop
+                new_pop.append({'chromosome': Chromosome(self.cfg).generate(), 'fitness': 9999999999999})
 
-            if self.cfg.elitism:
-                # adds the best individual from previous population
-                new_pop.append({'chromosome': pmanager.elite()['chromosome'].clone(), 'fitness': 9999999999999})
-
-            while len(new_pop) < self.cfg.popsize:
-                #prob = random.uniform(0.0, 1.0)
-                new_child = pmanager.tournament_selection()['chromosome'].clone()
-
-                #print 'prob', prob
-
-                # crossover
-                # self.cfg.p_crossover, self.cfg.p_mutation_subtree,
-                # self.cfg.p_mutation_hoist, self.cfg.p_mutation_point
-                if random.uniform(0.0, 1.0) < self.cfg.p_crossover:
-                    #print 'crossover'
-                    p2 = pmanager.tournament_selection()['chromosome'].clone()
-                    child_list = pmanager.crossover(new_child, p2)
-                    new_child = Chromosome(self.cfg).from_list(child_list)
-                    if not new_child.is_valid():
-                        continue
-                else:
-                    # reproduce and use the parent as is
-                    pass
-
-                # mutation subtree
-                if random.uniform(0.0, 1.0) < self.cfg.p_mutation_subtree:
-                    #print 'subtree'
-                    new_child.subtree_mutation()
-                    if not new_child.is_valid():
-                        continue
-
-                # mutation hoist
-                if random.uniform(0.0, 1.0) < self.cfg.p_mutation_hoist:
-                    #print 'hoist'
-                    new_child.hoist_mutation()
-                    if not new_child.is_valid():
-                        continue
-
-                # mutation point
-                #if random.uniform(0.0, 1.0) < self.cfg.p_mutation_point:
-                #print 'point mut'
-                new_child.point_mutation()
-
-                # else:
-                #     # reproduce
-                #     pass
-
-                #print 'new child:', new_child.to_list()
-                if new_child.is_valid():
-                    new_pop.append({'chromosome': new_child, 'fitness': 9999999999999})
-
-            # new population built, now evaluates it. Generation number is i+1
-            print 'Evaluating generation #%d' % (i+1)
+            pmanager = PopManager(self.cfg)
             pmanager.set_pop(new_pop)
-            self.evaluate(new_pop, i+1, self.cfg)
 
-            best = pmanager.elite()
-            print 'Best indivivual:', best, best['chromosome'].to_list()
+            # evaluate 1st generation
+            self.evaluate(new_pop)
+            generation_data[0] = {'data': pmanager.export_pop_to_list(), 'time': int(round(time.time() * 1000))}
 
-            #prepares for the next generation
-            print 'Copying gen data...'
-            generation_data[i] = {'data': pmanager.export_pop_to_list(), 'time': int(round(time.time() * 1000))}
-            print 'Copied...'
+            for generation in xrange(1, self.cfg.generations):
+                # starts from 1 because 1st generation (index 0) was evaluated already
+                print '[INFO]', 'Starting generation: #{}/{} Repetition: #{}/{}'.format(
+                    generation + 1, self.cfg.generations, repetition, self.cfg.repetitions)
 
-        print 'Algorithm ended'
-        all_best = pmanager.elite()
-        print 'Best indivivual:', all_best['chromosome'].to_list(), all_best['chromosome'].export_graphviz()
+                new_pop = []
 
-        #print 'generation_data:', generation_data
+                if self.cfg.elitism:
+                    # adds the best individual from previous population
+                    new_pop.append({'chromosome': pmanager.elite()['chromosome'].clone(), 'fitness': 9999999999999})
 
-        run_file = self.cfg.dataset_name
+                while len(new_pop) < self.cfg.popsize:
+                    new_child = pmanager.tournament_selection()['chromosome'].clone()
+                    if random.uniform(0.0, 1.0) < self.cfg.p_crossover:
+                        p2 = pmanager.tournament_selection()['chromosome'].clone()
+                        child_list = pmanager.crossover(new_child, p2)
+                        new_child = Chromosome(self.cfg).from_list(child_list)
+                        if not new_child.is_valid():
+                            continue
+                    else:
+                        # reproduce and use the parent as is
+                        pass
+
+                    if random.uniform(0.0, 1.0) < self.cfg.p_mutation:
+                        m_methods = ['subtree', 'hoist', 'point']
+                        m_selected = random.choice(m_methods)
+                        if m_selected == 'subtree':
+                            new_child.subtree_mutation()
+                            if not new_child.is_valid():
+                                continue
+                        elif m_selected == 'hoist':
+                            new_child.hoist_mutation()
+                            if not new_child.is_valid():
+                                continue
+                        else:
+                            new_child.point_mutation()
+
+                    # # mutation subtree
+                    # if random.uniform(0.0, 1.0) < self.cfg.p_mutation_subtree:
+                    #     new_child.subtree_mutation()
+                    #     if not new_child.is_valid():
+                    #         continue
+                    #
+                    # # mutation hoist
+                    # if random.uniform(0.0, 1.0) < self.cfg.p_mutation_hoist:
+                    #     new_child.hoist_mutation()
+                    #     if not new_child.is_valid():
+                    #         continue
+                    #
+                    # # mutation point
+                    # new_child.point_mutation()
+
+                    if new_child.is_valid():
+                        new_pop.append({'chromosome': new_child, 'fitness': 9999999999999})
+
+                # new population built, now evaluates it. Generation number is i+1
+                print '[INFO]', 'Evaluating generation #{}'.format(generation + 1)
+                pmanager.set_pop(new_pop)
+                self.evaluate(new_pop)
+
+                best = pmanager.elite()
+                print '[INFO]', 'Best indivivual:', best, best['chromosome'].to_list()
+
+                #prepares for the next generation
+                print '[INFO]', 'Copying gen data...'
+                generation_data[generation] = {'data': pmanager.export_pop_to_list(), 'time': int(round(time.time() * 1000))}
+                print '[INFO]', 'Copied...'
+
+            all_best = pmanager.elite()
+            print '[INFO]', 'Algorithm ended'
+            print '[INFO]', 'Best indivivual of Gen:{} Rep:{} -> fitness:{}'.format(i + 1, repetition, all_best['fitness'])
+            print '[INFO]', 'Best indivivual of Gen:{} Rep:{} -> {}'.format(i+1, repetition, all_best['chromosome'].to_list())
+
+            # epoch = int(round(time.time() * 1000))
+            # run_file = 'runs/' + os.path.basename(self.cfg.cfgdir) + '.' + str(epoch) + '.json'
+            # with open(run_file, 'w') as fp:
+            #     json.dump(generation_data, fp)
+            #
+            # self.plot_best_solution(all_best['chromosome'], epoch)
+            # self.get_fitness_plot(generation_data, epoch)
+
+            repetition_data.append(generation_data)
+            self.cfg.random_seed += 1
+            print '[INFO]', 'New random seed:', self.cfg.random_seed
+            random.seed(self.cfg.random_seed)
+
         epoch = int(round(time.time() * 1000))
-        run_file = 'runs/' + os.path.basename(self.cfg.cfgdir) + '.' + str(epoch) + '.json'
+        run_file = 'runs/' + os.path.basename(self.cfg.cfgdir) + '.REPETITIONS.' + str(self.cfg.repetitions) + '.' + str(epoch) + '.json'
         with open(run_file, 'w') as fp:
-            json.dump(generation_data, fp)
-
-        self.plot_best_solution(all_best['chromosome'], epoch)
-        self.get_fitness_plot(generation_data, epoch)
-
+            json.dump(repetition_data, fp)
 
     def is_outlier(self, p, thresh=1.5):
         """
@@ -271,8 +267,6 @@ class GenManager(object):
         #run_file = 'runs/' + os.path.basename(self.cfg.cfgdir) + '.' + str(epoch) + '.json'
         #plt.show()
 
-
-
         plot_file = 'plot/' + os.path.basename(self.cfg.cfgdir) + '.fitness.' + str(epoch) + '.pdf'
         plt.savefig(plot_file)
         plt.cla()
@@ -289,7 +283,7 @@ class GenManager(object):
             raise ValueError("The size of the calculated result is different from the dataset Y size")
 
         fitness = math.sqrt((1 / float(y_size)) * sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)]))
-        print 'fitness:', fitness
+        #print 'fitness:', fitness
 
         basex = [i[0] for i in self.cfg.dataset]
         basey = [i[-1] for i in self.cfg.dataset]
@@ -318,7 +312,7 @@ class GenManager(object):
         plt.close()
         pass
 
-    def evaluate(self, population, generation, cfg):
+    def evaluate(self, population):
         '''
         Evaluates fitness of population members 
         :param population: the array with the population
@@ -328,7 +322,6 @@ class GenManager(object):
     
         '''
 
-        print 'Generation:{}'.format(generation)
         for pindex in range(0, len(population)):
             p = population[pindex]
             res = p['chromosome'].run_with_dataset()
@@ -345,7 +338,7 @@ class GenManager(object):
             #print res
             #print y
 
-            print 'Chromosome:{}/{} Fitness:{} {}'.format(pindex, generation, fitness, p['chromosome'].to_list())
+            print 'Chromosome:{}/{} Fitness:{} {}'.format(pindex, len(population), fitness, p['chromosome'].to_list())
 
             # print 'Chromosome:', pindex, \
             #     '\n\t', 'Fitness:', fitness, \

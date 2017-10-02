@@ -29,19 +29,21 @@ def evaluate(population, cfg):
         if y_size != len(res):
             raise ValueError("The size of the calculated result is different from the dataset Y size")
 
+        print 'res', res
+
         fitness = math.sqrt((1 / float(y_size)) * sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)]))
-        # fitness = sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)])
+        #fitness = sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)])
 
         # print res
         # print y
 
-        print 'Chromosome:{} Fitness:{} {}'.format(pindex, fitness, p['chromosome'].to_list())
+        print 'Chromosome:{} Fitness:{:f} {}'.format(pindex, fitness, p['chromosome'].to_list())
         p['fitness'] = fitness
 
 if __name__ == "__main__":
     cfg = configparser.ConfigParser('basic_config.json')
     #c = chromosome.Chromosome(cfg).generate()
-    c = chromosome.Chromosome(cfg).from_list(['div', 0, 0])
+    c = chromosome.Chromosome(cfg).from_list(['div', 'div', 'div', -0.9938150784191171, 0, 0, 'div', 'sub', 'div', 'mul', 'sub', 'add', 0, 0, 0, -3.4110446878769562, 0, -3.4110446878769562, 0])
     print c.to_list()
     #print c.export_graphviz()
     #c.mutate()
