@@ -76,8 +76,8 @@ class PopManager(object):
         p1_c = copy.deepcopy(p1)
         p2_c = copy.deepcopy(p2)
 
-        start, end = p1_c.get_subtree()
-        donor_start, donor_end = p2_c.get_subtree()
+        start, end = p1_c.get_random_subtree()
+        donor_start, donor_end = p2_c.get_random_subtree()
 
         p1_l = p1_c.to_list()
         p2_l = p2_c.to_list()

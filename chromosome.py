@@ -71,9 +71,8 @@ class Chromosome(object):
         self.constants_range = self.cfg.constants_range
         self.functions = self.cfg.genetic_functions
         self.dataset = self.cfg.dataset
-        self.dataset_chunks = np.array_split(self.dataset, 8)
-
-        self.thread_max = 2
+        self.thread_max = 4
+        self.dataset_chunks = np.array_split(self.dataset, self.thread_max)
 
         #  program is the chromosome tree
         self.program = []
@@ -154,46 +153,47 @@ class Chromosome(object):
                     terminals[-1] -= 1
         return terminals == [-1]
 
-    def run_with_dataset(self):
+    def run_with_dataset(self, use_threads=False):
         """
         Execute the chromosome using the dataset available
         :return: 
         """
-        result_list = []
 
-        waits = {}
-        thread_i = 0
+        if use_threads:
+            result_list = []
 
-        with ProcessPoolExecutor(max_workers=self.thread_max) as executor:
-            for i in xrange(len(self.dataset_chunks)):
-                data = self.dataset_chunks[i]
-                waits[executor.submit(run_with_chunk, data, self.program)] = thread_i
-                thread_i += 1
+            waits = {}
+            thread_i = 0
 
-                if thread_i >= self.thread_max:
-                    #if self.cfg.debug:
-                    #    print i, 'of', len(self.dataset_chunks), 'iterations'
+            with ProcessPoolExecutor(max_workers=self.thread_max) as executor:
+                for i in xrange(len(self.dataset_chunks)):
+                    data = self.dataset_chunks[i]
+                    waits[executor.submit(run_with_chunk, data, self.program)] = thread_i
+                    thread_i += 1
 
-                    for future in as_completed(waits):
-                        node = waits[future]
-                        try:
-                            processed_chunk = future.result()
-                            if processed_chunk is not None:
-                                #if self.cfg.debug:
-                                #    print 'processed chunk with size:{}'.format(len(processed_chunk))
-                                result_list += processed_chunk
-                        except Exception as e:
-                            print '{} generated an exception: {}'.format(node, e)
-                    thread_i = 0
-                    waits = {}
+                    if thread_i >= self.thread_max:
+                        #if self.cfg.debug:
+                        #    print i, 'of', len(self.dataset_chunks), 'iterations'
 
-        return result_list
+                        for future in as_completed(waits):
+                            node = waits[future]
+                            try:
+                                processed_chunk = future.result()
+                                if processed_chunk is not None:
+                                    #if self.cfg.debug:
+                                    #    print 'processed chunk with size:{}'.format(len(processed_chunk))
+                                    result_list += processed_chunk
+                            except Exception as e:
+                                print '{} generated an exception: {}'.format(node, e)
+                        thread_i = 0
+                        waits = {}
+
+            return result_list
+        else:
+            return run_with_chunk(self.dataset, self.program)
 
     def export_graphviz(self, fade_nodes=None):
-        """
-        Generates a graphviz string to visualize the chromosome 
-        It can be seen on http://www.webgraphviz.com/
-        """
+
         terminals = []
         if fade_nodes is None:
             fade_nodes = []
@@ -202,13 +202,13 @@ class Chromosome(object):
             fill = "#cecece"
             if isinstance(node, dict):
                 if i not in fade_nodes:
-                    fill = "#136ed4"
+                    fill = "#122ed2"
                 terminals.append([node['arity'], i])
                 output += ('%d [label="%s", fillcolor="%s"] ;\n'
                            % (i, node['name'], fill))
             else:
                 if i not in fade_nodes:
-                    fill = "#60a6f6"
+                    fill = "#30a4ff"
                 if isinstance(node, int):
                     output += ('%d [label="%s%s", fillcolor="%s"] ;\n'
                                % (i, 'X', node, fill))
@@ -255,109 +255,18 @@ class Chromosome(object):
         return len(self.program)
 
     def subtree_mutation(self):
-        """Perform the subtree mutation operation on the program.
-
-        Subtree mutation selects a random subtree from the embedded program to
-        be replaced. A donor subtree is generated at random and this is
-        inserted into the original parent to form an offspring. This
-        implementation uses the "headless chicken" method where the donor
-        subtree is grown using the initialization methods and a subtree of it
-        is selected to be donated to the parent.
-
-        Parameters
-        ----------
-        random_state : RandomState instance
-            The random number generator.
-
-        Returns
-        -------
-        program : list
-            The flattened tree representation of the program.
-        """
-        # Build a new naive program
         chicken = Chromosome(self.cfg).generate()
-        # Do subtree mutation via the headless chicken method!
-
         mutated_list = pop_manager.PopManager.crossover(self, chicken)
         self.from_list(mutated_list)
         return mutated_list
 
     def hoist_mutation(self):
-        """Perform the hoist mutation operation on the program.
-
-        Hoist mutation selects a random subtree from the embedded program to
-        be replaced. A random subtree of that subtree is then selected and this
-        is 'hoisted' into the original subtrees location to form an offspring.
-        This method helps to control bloat.
-
-        Parameters
-        ----------
-        random_state : RandomState instance
-            The random number generator.
-
-        Returns
-        -------
-        program : list
-            The flattened tree representation of the program.
-        """
-        # Get a subtree to replace
-        start, end = self.get_subtree()
+        start, end = self.get_random_subtree()
         subtree = self.program[start:end]
-        #subtree_chrom = Chromosome(self.cfg).from_list(subtree)
-
-        # Get a subtree of the subtree to hoist
-        # sub_start, sub_end = subtree_chrom.get_subtree()
-        # hoist = subtree[sub_start:sub_end]
-        #
-        # print 'start, end', start, end
-        #
-        # str_list = []
-        # for i in xrange(len(self.program[:start])):
-        #     if isinstance(self.program[:start][i], dict):
-        #         str_list.append(self.program[:start][i]['name'])
-        #     else:
-        #         str_list.append(self.program[:start][i])
-        # print '1:', str_list
-        #
-        # str_list = []
-        # for i in xrange(len(hoist)):
-        #     if isinstance(hoist[i], dict):
-        #         str_list.append(hoist[i]['name'])
-        #     else:
-        #         str_list.append(hoist[i])
-        # print 'hoist', str_list
-        #
-        # str_list = []
-        # for i in xrange(len(self.program[end:])):
-        #     if isinstance(self.program[end:][i], dict):
-        #         str_list.append(self.program[end:][i]['name'])
-        #     else:
-        #         str_list.append(self.program[end:][i])
-        # print '2:', str_list
-        #
-        # mutated_list = self.program[:start] + hoist + self.program[end:]
-        # str_list = []
-        # for i in xrange(len(mutated_list)):
-        #     if isinstance(mutated_list[i], dict):
-        #         str_list.append(mutated_list[i]['name'])
-        #     else:
-        #         str_list.append(mutated_list[i])
-        # print '3:', str_list
-        # #print '3:', mutated_list
-
-        #self.from_list(mutated_list)
         self.from_list(subtree)
         return subtree
 
     def point_mutation(self):
-        """
-        Point mutation operation on the chromosome.
-        Point mutation selects random nodes from the embedded program to be
-        replaced. Terminals are replaced by other terminals and functions are
-        replaced by other functions that require the same number of arguments
-        as the original node. The resulting tree forms an offspring.
-        """
-
         for i in xrange(len(self.program)):
             prob = random.uniform(0.0, 1.0)
             #print 'prob', prob, ' self.cfg.p_mutation_point',  self.cfg.p_mutation_point
@@ -385,16 +294,13 @@ class Chromosome(object):
                 self.program[i] = g
         return self.program
 
-    def get_subtree(self):
+    def get_random_subtree(self):
         """
         Get a random subtree
         Use the prob 90% for function and 10% for leaf
         Set the probabilities for every node
         Then normalize and select by cdf of the normalized data
-        :return start, end : tuple of two ints
         """
-
-        #print 'get subtree'
 
         prob_list = []
         for i in xrange(len(self.program)):
@@ -458,8 +364,5 @@ class Chromosome(object):
         return rep
 
     def clone(self):
-        #print 'original_program', self.program
-        #print 'before', self.to_list()
         chrom = Chromosome(self.cfg).from_list(self.to_list())
-        #print 'after', self.to_list()
         return chrom

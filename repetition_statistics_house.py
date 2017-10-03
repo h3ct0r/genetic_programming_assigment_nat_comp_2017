@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def evaluate(c, cfg, is_plot=False):
+def evaluate(c, cfg):
     res = c.run_with_dataset()
 
     y = [i[-1] for i in cfg.dataset]
@@ -30,48 +30,9 @@ def evaluate(c, cfg, is_plot=False):
         raise ValueError("The size of the calculated result is different from the dataset Y size")
 
     fitness = math.sqrt((1 / float(y_size)) * sum([(res[i] - y[i]) ** 2 for i in xrange(y_size)]))
+    fitness_percent = fitness * ((100 * len(y))/float(sum(y)))
 
-    if is_plot:
-        from mpl_toolkits.mplot3d import Axes3D
-        import matplotlib.pyplot as plt
-        from matplotlib import cm
-        from matplotlib.ticker import LinearLocator, FormatStrFormatter
-        import numpy as np
-        fig = plt.figure()
-        ax = fig.gca(projection='3d')
-
-        basex0 = [i[0] for i in cfg.dataset]
-        basex1 = [i[1] for i in cfg.dataset]
-        basex0, basex1 = np.meshgrid(basex0, basex1)
-        basey = [i[-1] for i in cfg.dataset]
-
-        calcx0 = [i[0] for i in cfg.dataset]
-        calcx1 = [i[1] for i in cfg.dataset]
-        calcx0, calcx1 = np.meshgrid(calcx0, calcx1)
-        calcy = res
-
-
-        plt.title('Function plot (House)')
-        # plt.xlabel('X')
-        # plt.ylabel('Y')
-
-        surf_original = ax.plot_surface(basex0, basex1, basey, cmap=cm.coolwarm, linewidth=0, antialiased=False,
-                               label='Original data')
-        plt.show()
-
-        fig = plt.figure()
-        ax = fig.gca(projection='3d')
-        plt.title('Function plot (Keijzer 10)')
-        surf_estimated = ax.plot_surface(calcx0, calcx1, calcy, cmap=cm.coolwarm, linewidth=0, antialiased=False,
-                               label='Estimated data')
-
-        # plt.scatter(basex, basey, c='g', label='Original data')
-        # plt.scatter(calcx, calcy, c='r', label='Estimated')
-        #plt.legend(loc=1)
-
-        plt.show()
-
-    return fitness
+    return fitness, fitness_percent
 
 
 def remove_outliers_with_mean(mlist):
@@ -95,6 +56,7 @@ def remove_outliers_with_mean(mlist):
 
 def get_best_fitness_mean_std(data, cfg, is_plot=False):
     best_fitness = []
+    best_fitness_percent = []
     similarity_rep = []
 
     best_rep = -1
@@ -108,8 +70,9 @@ def get_best_fitness_mean_std(data, cfg, is_plot=False):
 
         best_ind = min(d[last_k]['data'], key=lambda x: x['fitness'])
         c = chromosome.Chromosome(cfg).from_list(best_ind['chromosome'])
-        fitness = evaluate(c, cfg)
+        fitness, fitness_percent = evaluate(c, cfg)
         best_fitness.append(fitness)
+        best_fitness_percent.append(fitness_percent)
 
         if fitness < best_fit:
             best_rep = i
@@ -143,15 +106,18 @@ def get_best_fitness_mean_std(data, cfg, is_plot=False):
     mean = np.mean(best_fitness)
     std = np.std(best_fitness)
 
+    mean_p = np.mean(best_fitness_percent)
+    std_p = np.std(best_fitness_percent)
+
     if is_plot:
         get_fitness_plot(data[best_rep])
         get_similarity_plot(similarity_rep)
 
     total_best_ind = min(data[best_rep][last_k]['data'], key=lambda x: x['fitness'])
     best_c = chromosome.Chromosome(cfg).from_list(total_best_ind['chromosome'])
-    evaluate(best_c, cfg, is_plot=True)
+    #evaluate(best_c, cfg)
 
-    return {'mean': mean, 'std': std, 'best':min(best_fitness)}
+    return {'mean': mean, 'std': std, 'best':min(best_fitness), 'mean_p': mean_p, 'std_p': std_p}
 
 
 def is_outlier(p, thresh=3.5):
@@ -290,7 +256,7 @@ if __name__ == '__main__':
     data = load_generation_dataset(sys.argv[1])
     cfg = configparser.ConfigParser(sys.argv[2])
     print 'Using dataset: ', cfg.dataset_name
-    print get_best_fitness_mean_std(data, cfg)
+    print get_best_fitness_mean_std(data, cfg, is_plot=True)
     print '\n'
 
     cfg.dataset_name = cfg.dataset_name.replace('train', 'test')
